@@ -1,8 +1,9 @@
 
+
 use iced::widget::{button, column, container, row, text};
 use iced::{Element, Length, Font, Sandbox, Settings};
 use iced::window;
-use iced::window::icon::Icon;
+use iced::window::{icon, Icon};
 
 #[derive(Debug, Clone)]
 pub enum Message {
@@ -21,7 +22,7 @@ impl Sandbox for NavigationApp {
     }
 
     fn title(&self) -> String {
-        String::from("导航栏示例")
+        String::from("Iced example")
     }
 
     fn update(&mut self, message: Message) {
@@ -85,5 +86,13 @@ async fn main() -> iced::Result  {
     settings.window.size = (800, 400);
     settings.window.position = window::Position::Centered;
     settings.default_font = Font::with_name("Microsoft YaHei");
+
+    let icon_bytes = include_bytes!("icons/title_icon.png");
+    let img = image::load_from_memory(icon_bytes).expect("REASON").into_rgba8(); // 转换为 RGBA8 格式
+    let (width, height) = (img.width(), img.height());
+    let rgba_data = img.into_raw();
+    settings.window.icon = Some(
+        Icon::from(icon::from_rgba(rgba_data, width, height).unwrap())
+    );
     NavigationApp::run(settings)
 }
