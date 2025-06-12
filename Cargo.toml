@@ -4,8 +4,14 @@ version = "0.1.0"
 edition = "2021"
 
 [dependencies]
-    iced = "0.10"
+    iced = {version = "0.10", features = ["default", ]}
     tokio = {version = "1.40.0", features = ["full"] }
     log = "0.4"
     chrono = "0.4"
+    fern = "0.7.0"
     image="0.24"
+    "windows"= {version = "0.61", features = ["default",
+        "Win32_System_RestartManager",
+        "Win32_Foundation",
+        "Win32_System_Threading",]}
+    "rfd"= {version = "0.15", features = ["default"]}
