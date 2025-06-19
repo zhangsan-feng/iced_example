@@ -10,10 +10,11 @@ use iced::window::{icon, Icon};
 
 #[tokio::main]
 async fn main() -> iced::Result  {
+    // https://github.com/fogarecious/iced_tutorial/blob/main/README.md
     // config::logger::logger_init("./logs/").await;
     
     let mut settings = Settings::default();
-    settings.window.size = (600, 400);
+    settings.window.size = (1200, 600);
     settings.window.resizable = false;
     settings.window.transparent = true;
     settings.window.position = window::Position::Centered;

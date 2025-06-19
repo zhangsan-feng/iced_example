@@ -1,19 +1,19 @@
 
 use iced::widget::{button, column, container, row, text, Column, Container};
-use iced::{Element, Length, Sandbox, };
-use crate::gui::process_file::{ProcessFile, ProcessFileMessage};
+use iced::{Element, Length, Sandbox, Theme};
+use crate::gui::rvc::rvc_layout::{RvcDataStore, RvcMessage};
 use crate::gui::process_limit::{ProcessLimitMessage, ProcessLimit};
 
 #[derive(Debug, Clone)]
 pub enum Message {
     PageChange(usize),
-    ProcessFile(ProcessFileMessage),
+    RvcMsg(RvcMessage),
     ProcessLimit(ProcessLimitMessage)
 }
 
 pub struct ApplicationGui {
     pub current_page: usize,
-    pub process_file_page: ProcessFile,
+    pub process_file_page: RvcDataStore,
     pub process_limit_page: ProcessLimit,
 }
 
@@ -24,7 +24,7 @@ impl Sandbox for ApplicationGui {
     fn new() -> Self {
         ApplicationGui { 
             current_page: 0 , 
-            process_file_page: ProcessFile::new() ,
+            process_file_page: RvcDataStore::new() ,
             process_limit_page: ProcessLimit::new() ,
         }
     }
@@ -38,7 +38,7 @@ impl Sandbox for ApplicationGui {
             Message::PageChange(index) => {
                 self.current_page = index;
             }
-            Message::ProcessFile(message) => {
+            Message::RvcMsg(message) => {
                 self.process_file_page.update(message);
             }
             Message::ProcessLimit(message) => {
@@ -47,7 +47,7 @@ impl Sandbox for ApplicationGui {
         }
     }
 
-    fn view(&self) -> Element<'static, Message> {
+    fn view(&self) -> Element<Message> {
         let nav_items = vec!["首页", "设置", "关于"];
 
 
@@ -67,21 +67,31 @@ impl Sandbox for ApplicationGui {
                             .on_press(Message::PageChange(i))
                             .into()
                     }).collect(),
-            ).width(Length::Fixed(150.0))
-        ).width(Length::Fixed(150.0)).padding(3);
+            )
+        )
+            .width(Length::Fixed(150.0))
+            .height(Length::Fill)
+            .style(crate::gui::style::container_style::custom_container_style_1)
+            .padding(5);
 
         
         let content = match self.current_page {
-            0 => self.process_file_page.view().map(Message::ProcessFile),
+            0 => self.process_file_page.view().map(Message::RvcMsg),
             1 => self.process_limit_page.view().map(Message::ProcessLimit),
             3 => Column::new().push(Container::new(text("404 页面不存在"))).into(),
             _ => text("404 页面不存在").into(),
         };
             
         
-        row![navigation, container(content).width(Length::Fill),]
-            .spacing(20)
+        row![
+            navigation, 
+            container(content)
+            .padding(10)
+            .width(Length::Fill)
+        ]
+            .spacing(0)
             .into()
+            
     }
 }
 
