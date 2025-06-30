@@ -13,7 +13,7 @@ pub enum Message {
 
 pub struct ApplicationGui {
     pub current_page: usize,
-    pub process_file_page: RvcDataStore,
+    pub rvc_page: RvcDataStore,
     pub process_limit_page: ProcessLimit,
 }
 
@@ -24,7 +24,7 @@ impl Sandbox for ApplicationGui {
     fn new() -> Self {
         ApplicationGui { 
             current_page: 0 , 
-            process_file_page: RvcDataStore::new() ,
+            rvc_page: RvcDataStore::new() ,
             process_limit_page: ProcessLimit::new() ,
         }
     }
@@ -39,7 +39,7 @@ impl Sandbox for ApplicationGui {
                 self.current_page = index;
             }
             Message::RvcMsg(message) => {
-                self.process_file_page.update(message);
+                self.rvc_page.update(message);
             }
             Message::ProcessLimit(message) => {
                 self.process_limit_page.update(message)
@@ -76,7 +76,7 @@ impl Sandbox for ApplicationGui {
 
         
         let content = match self.current_page {
-            0 => self.process_file_page.view().map(Message::RvcMsg),
+            0 => self.rvc_page.view().map(Message::RvcMsg),
             1 => self.process_limit_page.view().map(Message::ProcessLimit),
             3 => Column::new().push(Container::new(text("404 页面不存在"))).into(),
             _ => text("404 页面不存在").into(),
