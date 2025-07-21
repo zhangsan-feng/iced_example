@@ -3,6 +3,7 @@ mod win32api;
 mod application;
 mod config;
 
+use std::env;
 use iced::{Font, Sandbox, Settings};
 use iced::window;
 use iced::window::{icon, Icon};
@@ -11,8 +12,16 @@ use iced::window::{icon, Icon};
 #[tokio::main]
 async fn main() -> iced::Result  {
     // https://github.com/fogarecious/iced_tutorial/blob/main/README.md
-    // config::logger::logger_init("./logs/").await;
+    config::logger::logger_init(env::current_dir().unwrap().display().to_string()).await;
     
+    match env::current_dir() {
+        Ok(path) => {
+            println!("当前工作目录是: {}", path.display());
+        }
+        Err(e) => {
+            eprintln!("无法获取当前工作目录: {}", e);
+        }
+    }
     let mut settings = Settings::default();
     settings.window.size = (1200, 600);
     settings.window.resizable = false;
