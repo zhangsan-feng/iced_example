@@ -84,7 +84,7 @@ impl Sandbox for ApplicationGui {
             
         
         row![
-            navigation, 
+            navigation,
             container(content)
             .padding(10)
             .width(Length::Fill)
