@@ -1,4 +1,4 @@
-use cpal::traits::{DeviceTrait, HostTrait};
+
 use iced::widget::{button, container, pick_list, text, text_input, Column, PickList, Row, Text};
 use iced::{Color, Element, Length, Theme};
 use crate::application::audio_stream_handler;

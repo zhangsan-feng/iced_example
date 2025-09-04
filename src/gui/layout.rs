@@ -2,19 +2,19 @@
 use iced::widget::{button, column, container, row, text, Column, Container};
 use iced::{Element, Length, Sandbox, Theme};
 use crate::gui::rvc::rvc_layout::{RvcDataStore, RvcMessage};
-use crate::gui::process_limit::{ProcessLimitMessage, ProcessLimit};
+
 
 #[derive(Debug, Clone)]
 pub enum Message {
     PageChange(usize),
     RvcMsg(RvcMessage),
-    ProcessLimit(ProcessLimitMessage)
+
 }
 
 pub struct ApplicationGui {
     pub current_page: usize,
     pub rvc_page: RvcDataStore,
-    pub process_limit_page: ProcessLimit,
+
 }
 
 
@@ -25,7 +25,7 @@ impl Sandbox for ApplicationGui {
         ApplicationGui { 
             current_page: 0 , 
             rvc_page: RvcDataStore::new() ,
-            process_limit_page: ProcessLimit::new() ,
+
         }
     }
 
@@ -41,14 +41,12 @@ impl Sandbox for ApplicationGui {
             Message::RvcMsg(message) => {
                 self.rvc_page.update(message);
             }
-            Message::ProcessLimit(message) => {
-                self.process_limit_page.update(message)
-            }
+
         }
     }
 
     fn view(&self) -> Element<Message> {
-        let nav_items = vec!["首页", "设置", "关于"];
+        let nav_items = vec!["首页", "设置", "关于","404"];
 
 
         let navigation = container(
@@ -77,8 +75,8 @@ impl Sandbox for ApplicationGui {
         
         let content = match self.current_page {
             0 => self.rvc_page.view().map(Message::RvcMsg),
-            1 => self.process_limit_page.view().map(Message::ProcessLimit),
-            3 => Column::new().push(Container::new(text("404 页面不存在"))).into(),
+            1 => Column::new().push(Container::new(text("设置"))).into(),
+            2 => Column::new().push(Container::new(text("关于"))).into(),
             _ => text("404 页面不存在").into(),
         };
             
