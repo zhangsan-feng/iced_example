@@ -1,0 +1,9 @@
+[package]
+name = "tk_gui"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+iced="0.13.1"
+iced_core="0.13.1"
+image= "0.25.8"
